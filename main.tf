@@ -2,7 +2,7 @@
 #   required_providers {
 #     aws = {
 #       source = "hashicorp/aws"
-#       version = "~> 1.1.6"
+#       version = "~> 1.5.4"
 #     }
 #   }
 # }
@@ -10,7 +10,7 @@
 required_providers {
   aws = {
     source  = "hashicorp/aws"
-    version = "~> 1.1.6"
+    version = "~> 1.5.4"
   }
 }
 
@@ -53,12 +53,12 @@ resource "aws_instance" "ec2_v1" {
   count = "1"
   #   subnet_id = ""
   instance_type          = "t2.micro"
-  key_name               = "key-pair"
+  key_name               = "EC2key-pair"
   vpc_security_group_ids = [aws_security_group.web_traffic.id]
 }
 
 provisioner "remote-exec" {
-  inline = [
+  inline = }
     "sudo apt update && upgrade",
     "sudo apt install -y python3.8",
     "wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
@@ -66,12 +66,12 @@ provisioner "remote-exec" {
     "sudo apt-get update",
     "sudo apt-get install -y openjdk-8-jre",
     "sudo apt-get install -y jenkins",
-  ]
+  }
 }
 
 connection {
   type        = "ssh"
   user        = "ubuntu"
-  private_key = file("${path.module}/Key-pair.pem")
+  private_key = file("${path.module}/EC2Key-pair.pem")
   host        = self.public_ip
 }
